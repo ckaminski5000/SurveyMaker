@@ -12,6 +12,8 @@ const getUser = asyncHandler(async (req, res) => {
 })
 
 
+
+
 //create new Users
 //@route POST /Users/create
 const createUser = asyncHandler(async (req, res) => {
@@ -23,7 +25,6 @@ const createUser = asyncHandler(async (req, res) => {
     }
 
     const checkEmailExists = await User.findOne({email: email}).exec();
-    console.log(checkEmailExists);
     if(checkEmailExists){
         res.status(401).json({message: 'This user exists.  The email has been taken.'});
     }
@@ -64,10 +65,10 @@ const createUser = asyncHandler(async (req, res) => {
 })
 
 
-//login Users
+//login Users or create users
 //@route POST /Users/login
 const loginUser = asyncHandler(async (req, res) => {
-    
+    console.log(req.oidc.user);
     const { email, password } = req.body;
 
     const user = await User.findOne({email: email})

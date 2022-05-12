@@ -5,8 +5,6 @@ const User = require('../models/userModel');
 const protect = (req, res, next) => {
     const cookies = req.header.cookies;
    const token = cookies.split("=")[1];
-    
-    
 
     if (!token) {
       res.status(404).json({ message: "No token found" });
