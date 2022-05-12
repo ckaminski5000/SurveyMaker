@@ -77,4 +77,4 @@ app.get('/authorized', function (req, res) {
 
 app.listen(port, () => console.log('CORS-enabled web server started on port ' + port));
 
-module.exports = app;
+module.exports = {app, jwtCheck};

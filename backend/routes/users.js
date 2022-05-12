@@ -5,6 +5,10 @@ const { getUser, createUser, updateUser, deleteUser, loginUser, refreshToken } =
 var passport = require('passport');
 var OpenIDConnectStrategy = require('passport-openidconnect');
 
+
+router.get('/', function(req, res) {
+  res.json({message: 'You got me'})
+})
 router.get('/getUser', getUser)
 router.post('/create', createUser);
 router.post('/login', loginUser);
