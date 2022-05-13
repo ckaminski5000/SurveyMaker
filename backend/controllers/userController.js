@@ -14,88 +14,31 @@ const getUser = asyncHandler(async (req, res) => {
 
 
 
-//create new Users
-//@route POST /Users/create
-const createUser = asyncHandler(async (req, res) => {
-    const { name, email, password } = req.body;
-
-    if(!req.body.name || !req.body.email || !req.body.password){
-        res.status(400);
-        throw new Error('Please add all fields');
+//login Users or create users
+//@route POST /Users/login
+const loginOrCreateUser = asyncHandler(async (req, res) => {
+    const { name, email, _id } = req.body;
+    console.log(req.body)
+    const user = await User.findOne({email: email}).exec();
+    if(user){
+        res.status(200).json(user);
     }
 
-    const checkEmailExists = await User.findOne({email: email}).exec();
-    if(checkEmailExists){
-        res.status(401).json({message: 'This user exists.  The email has been taken.'});
-    }
-
-    //create Hashed password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    console.log(hashedPassword);
-    const user = await User.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword
+    const newUser = await User.create({
+        name: name,
+        email: email,
+        _id: _id
     })
 
-    if(user) {
-        let token = generateToken(user._id);
-
-        res.cookie(String(user._id), token, {
-            path: '/',
-            expires: new Date(Date.now() + 1000 * 30),
-            httpOnly: true,
-            sameSite: 'lax'
-        })
-
-
+    if(newUser) {
         res.status(201).json({
-            _id: user.id,
-            name: user.name,
-            email: user.email,
-            token: token
+            _id: _id,
+            name: name,
+            email: email,
         })
-
-       
     } else{
         res.status(400)
         throw new Error('Invalid user data')
-    }
-})
-
-
-//login Users or create users
-//@route POST /Users/login
-const loginUser = asyncHandler(async (req, res) => {
-    console.log(req.oidc.user);
-    const { email, password } = req.body;
-
-    const user = await User.findOne({email: email})
-    const check = await bcrypt.compare(password, user.password)
-
-   if(user && check){
-        let token = generateToken(user._id);
-
-        res.cookie('user_id', token, {
-            path: '/',
-            expires: new Date(Date.now() + 1000 * 30),
-            httpOnly: false,
-            sameSite: 'none',
-            domain: 'localhost:3000'
-        })
-
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: token,
-            cookies: req.cookies
-        })
-
-    }else{
-        res.status(400);
-        throw new Error('Invalid credentials');
     }
 })
 
@@ -134,47 +77,10 @@ const generateToken = (id) => {
 }
 
 
-//Generate a refresh token
-
-const refreshToken = (req, res, next) => {
-    const cookies = req.headers.cookie;
-    const prevToken = cookies.split(' ')[1];
-    console.log('prevToken' + prevToken);
-    console.log('req.user ' + req.user);
-    //check if there was a previous cookie
-    if(!prevToken){
-        res.status(402).json({message: "Couldn't find token"})
-    }
-    //verify that cookie is correct
-    jwt.verify(prevToken, process.env.JWT_SECRET);
-
-    //clear the cookie
-    res.clearCookie(`${user._id}`)
-    req.cookies[`${user._id}`] = '';
-
-    //regenerate new token
-    let token = generateToken(user._id);
-    
-    
-
-    //regenerate cookie
-    res.cookie(user._id, token, {
-        path: '/',
-        expires: new Date(Date.now() + 1000 * 30),
-        httpOnly: true,
-        sameSite: 'lax'
-    })
-
-    req.id = user._id;
-    console.log('req.id' + req.id);
-    next();
-}
 
 module.exports = {
     getUser,
-    createUser,
     updateUser,
     deleteUser, 
-    loginUser,
-    refreshToken
+    loginOrCreateUser
 }
