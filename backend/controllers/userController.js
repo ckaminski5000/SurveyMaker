@@ -23,23 +23,25 @@ const loginOrCreateUser = asyncHandler(async (req, res) => {
     if(user){
         res.status(200).json(user);
     }
-
-    const newUser = await User.create({
-        name: name,
-        email: email,
-        _id: _id
-    })
-
-    if(newUser) {
-        res.status(201).json({
-            _id: _id,
+    else{
+        const newUser = await User.create({
             name: name,
             email: email,
+            _id: _id
         })
-    } else{
-        res.status(400)
-        throw new Error('Invalid user data')
+    
+        if(newUser) {
+            res.status(201).json({
+                _id: _id,
+                name: name,
+                email: email,
+            })
+        } else{
+            res.status(400)
+            throw new Error('Invalid user data')
+        }
     }
+    
 })
 
 
