@@ -17,7 +17,7 @@ export function ShortResponse(props) {
 
       <h4>
         Question {props.index + 1}:
-        <medium class="text-muted"> Short Response Question</medium>
+        <medium className="text-muted"> Short Response Question</medium>
       </h4>
       <Form.Label>Add Your Question:</Form.Label>
       <Form.Control
@@ -35,11 +35,11 @@ export function ShortResponse(props) {
 
 export function MultipleChoice(props) {
   const answerChoices = props.question.answer_choices.map((answer, index) => (
-    <>
+    <div key={index}>
       <Form.Control
         id={props.question._id}
         name="answerChoice"
-        answerNum={index}
+        answernum={index}
         answer="yes"
         onChange={props.onChange}
         value={answer}
@@ -47,7 +47,7 @@ export function MultipleChoice(props) {
         placeholder={answer}
       />
       <br />
-    </>
+    </div>
   ));
 
   return (
@@ -58,7 +58,7 @@ export function MultipleChoice(props) {
       />
       <h4>
         Question {props.index + 1}:
-        <medium class="text-muted"> Multiple Choice Question</medium>
+        <medium className="text-muted"> Multiple Choice Question</medium>
       </h4>
       <Form.Label>Edit Your Question:</Form.Label>
       <Form.Control
@@ -87,10 +87,10 @@ export function MultipleChoice(props) {
 
 export function TrueFalse(props) {
   const answerChoices = props.question.answer_choices.map((answer, index) => (
-    <>
+    <div key={index}>
       <Form.Control
         id={props.question._id}
-        answerNum={index}
+        answernum={index}
         answer="yes"
         onChange={props.onChange}
         name="answerChoice"
@@ -99,7 +99,7 @@ export function TrueFalse(props) {
         placeholder={answer}
       />
       <br />
-    </>
+    </div>
   ));
 
   return (
@@ -111,7 +111,7 @@ export function TrueFalse(props) {
 
       <h4>
         Question {props.index + 1}:
-        <medium class="text-muted"> True/False Question</medium>
+        <medium className="text-muted"> True/False Question</medium>
       </h4>
       <Form.Label>Add Your Question:</Form.Label>
       <Form.Control
@@ -142,7 +142,7 @@ export function Paragraph(props) {
 
       <h4>
         Question {props.index + 1}:
-        <medium class="text-muted"> Paragraph Response Question</medium>
+        <medium className="text-muted"> Paragraph Response Question</medium>
       </h4>
       <Form.Label>Add Your Question:</Form.Label>
       <Form.Control

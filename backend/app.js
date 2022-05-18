@@ -46,8 +46,8 @@ app.use(cors({credentials: true, origin: "http://localhost:3000"}));
 app.use(jwtCheck);
 
 app.use('/', indexRouter);
-app.use('/questions', questionsRouter);
-app.use('/surveys', surveysRouter);
+app.use('/api/questions', questionsRouter);
+app.use('/api/surveys', surveysRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

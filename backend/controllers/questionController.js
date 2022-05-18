@@ -14,15 +14,13 @@ const getQuestion = asyncHandler(async (req, res) => {
 //@route POST /questions/create
 const createQuestion = asyncHandler(async (req, res) => {
     
-    const question = await Question.create({
-        question: req.body.question,
-        type: req.body.type,
-        answer_choices: req.body.answer_choices,
-        survey_id: req.body.survey_id,
-        user_id: req.user._id
-    })
+    const questions = JSON.parse(req.body.questions);
+
+    for(let i = 0; i < questions.length; i++) {
+        let addedQuestion = await Question.create(question)
+    }
     
-    res.status(200).json(question);
+    res.status(200).json(questions);
 })
 
 //update questions

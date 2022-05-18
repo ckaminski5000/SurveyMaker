@@ -13,11 +13,12 @@ const getSurvey = asyncHandler(async (req, res) => {
 //create new surveys
 //@route POST /surveys/create
 const createSurvey = asyncHandler(async (req, res) => {
-    
     const survey = await Survey.create({
         questions: req.body.questions,
-        user_id: req.user._id,
-        title: req.body.title
+        user_id: req.body.user_id,
+        title: req.body.title,
+        description: req.body.description,
+        creationTime: req.body.creationTime
     })
     
     res.status(200).json(survey);

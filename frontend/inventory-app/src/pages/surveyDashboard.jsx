@@ -18,11 +18,12 @@ function Dashboard() {
     loading: true
   });
   const [counter, setCounter] = useState(0);
-  const [view, setView] = useState('displaySurvey');
+  const [view, setView] = useState('createSurvey');
+  const [currentSurveyId, setCurrentSurveyId] = useState('');
   const [userData, setUserData] = useState({
-                                      _id: 'google-oauth2|115359033007255963723',
-                                      name: 'Cassie Kaminski',
-                                      email: 'rice.cassie@gmail.com'
+                                      _id: '',
+                                      name: '',
+                                      email: ''
   });
 
 
@@ -84,12 +85,27 @@ function Dashboard() {
     }
   }, [user]);
 
+  const switchView = (newView) => {
+    setView(newView);
+  }
+
+  const sendSurveyId = (id) => {
+      setCurrentSurveyId(id);
+  }
+
   const renderSwitch = (param) => {
     switch(param){
       case 'createSurvey':
-          return <CreateSurvey id={userData._id} />
+          return <CreateSurvey 
+                    id={userData._id}
+                    switchView={switchView} 
+                    />
       case 'displaySurvey':
-          return <DisplaySurvey id={userData._id} />
+          return <DisplaySurvey 
+                  id={userData._id}
+                  switchView={switchView} 
+                  surveyId={currentSurveyId}
+                  />
       default:
         return 'Survey Dashboard'
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import uniqid from "uniqid";
 import {
   MultipleChoice,
@@ -9,19 +9,22 @@ import {
   TrueFalse,
   SurveyTitle
 } from "./createQuestionComponents";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 //the id from the survey created on the dashboard will be sent to this page
 //on save and submit, the survey will be sent along with the 
 //questions to the database for creation as an entry
 
 export function CreateSurvey(props) {
+
+  const { user, isAuthenticated, getAccessTokenSilently} = useAuth0();
+
   const [survey, setSurvey] = useState({
-    _id: uniqid('survey-'),
     title: '',
     description: '',
     questions: [],
-    answer_choices: [],
-    surveyId: "",
+    user_id: "",
   });
   const [display, setDisplay] = useState("button");
   const [questionType, setQuestionType] = useState(1);
@@ -30,7 +33,7 @@ export function CreateSurvey(props) {
 
   const startSurvey = () => {
     setDisplay("CreateSurvey");
-    setSurvey({ ...survey, surveyId: uniqid("survey-") });
+    setSurvey({ ...survey, _id: uniqid('survey-'), user_id: props.id});
   };
 
   const handleSurveyChange = (e) => {
@@ -49,7 +52,7 @@ export function CreateSurvey(props) {
     if (e.target.getAttribute("answer") === "yes") {
       let answerChoices = questionArray[questionIndex].answer_choices;
       //change answer choice based on index of item in array
-      answerChoices[e.target.getAttribute("answerNum")] = e.target.value;
+      answerChoices[e.target.getAttribute("answernum")] = e.target.value;
 
       questionArray[questionIndex] = {
         ...questionArray[questionIndex],
@@ -135,9 +138,54 @@ export function CreateSurvey(props) {
       setQuestions(questionArray);
   }
 
+  const callApi = useCallback(async (url, fetchOptions) => {
+    const serverUrl = 'http://localhost:5000';
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(`${serverUrl}${url}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }, ...fetchOptions
+      });
 
-  const onSubmit = (e) => {
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.log(error.error);
+    }
+  });
+
+
+  const onSubmitSurvey = (e) => {
     e.preventDefault();
+      
+      //send survey to database
+
+      callApi('/api/surveys/create', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                questions: questions,
+                                title: survey.title,
+                                description: survey.description,
+                                user_id: survey.user_id,
+                                creationTime: new Date(),
+                                survey_id: survey._id
+                            }),
+                            
+      })
+
+      //send id of survey to user in database
+      callApi(`/users/updateSurveys/${survey.user_id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            survey_id: survey._id
+        }),
+        
+})
+
+      //direct user to see a preview of their survey on displaysurvey page
+      props.switchView('displaySurvey');
   };
 
   const makeSurvey = () => {
@@ -190,6 +238,12 @@ export function CreateSurvey(props) {
           return null;
       }
     });
+    const displaySubmitBtn = () => {
+      if (questions.length >= 1){
+        return <Button variant="info" onClick={onSubmitSurvey}>Save and Finish Survey</Button>;
+      }
+    }
+    const SubmitBtn = displaySubmitBtn();
 
     const chooseQuestionTypeForm = (
       <>
@@ -215,7 +269,7 @@ export function CreateSurvey(props) {
                     <Button style={{margin: 10}} variant="success" onClick={() => setShowAddQuestionBtn(false)}>
                         Add Question
                     </Button>
-                    <Button style={{margin: 10}} variant="info">Save and Finish Survey</Button>
+                    {SubmitBtn}
                 </div>
             )
         }
@@ -251,6 +305,8 @@ export function CreateSurvey(props) {
     displayedSurveyCreator = makeSurvey();
   }, [questions]);
 
+  
+
   return (
     <>
       <div style={{padding: 20, margin: 'auto'}}>
@@ -260,8 +316,7 @@ export function CreateSurvey(props) {
               <Button variant="info" onClick={startSurvey}>
                 Click Here to Create a Survey
               </Button>
-              {questions.length >= 1 ? <Button variant="info">Save and Finish Survey</Button> : null} 
-            </>
+            </> 
             ) : (
               <div>
                   {displayedSurveyCreator}
@@ -271,3 +326,8 @@ export function CreateSurvey(props) {
     </>
   );
 }
+
+
+
+
+  

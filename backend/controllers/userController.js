@@ -45,16 +45,23 @@ const loginOrCreateUser = asyncHandler(async (req, res) => {
 })
 
 
-//update Users
+//update User surveys
 //@route PUT /Users/update
-const updateUser = asyncHandler(async (req, res) => {
+const updateUserSurveys = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
+    console.log(user);
     if(!user){
         res.status(400);
         throw new Error('That user was not found.');
     }
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true});
-    res.status(200).json(updatedUser);
+    else{
+        console.log(req.body.survey_id)
+        const newSurveys = [...user.surveys];
+        newSurveys.push(req.body.survey_id)
+        const updatedUser = await User.findOneAndUpdate({_id: req.params.id}, {surveys: newSurveys})
+        res.status(200).json(updatedUser);
+    }
+    
 })
 
 
@@ -82,7 +89,7 @@ const generateToken = (id) => {
 
 module.exports = {
     getUser,
-    updateUser,
+    updateUserSurveys,
     deleteUser, 
     loginOrCreateUser
 }
