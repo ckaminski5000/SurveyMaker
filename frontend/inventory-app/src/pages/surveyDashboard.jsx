@@ -87,6 +87,7 @@ function Dashboard() {
 
   const switchView = (newView) => {
     setView(newView);
+
   }
 
   const sendSurveyId = (id) => {
@@ -99,6 +100,7 @@ function Dashboard() {
           return <CreateSurvey 
                     id={userData._id}
                     switchView={switchView} 
+                    sendSurveyId={sendSurveyId}
                     />
       case 'displaySurvey':
           return <DisplaySurvey 

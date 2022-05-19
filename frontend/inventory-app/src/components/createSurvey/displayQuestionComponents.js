@@ -1,15 +1,16 @@
 
-import Form from 'react-bootstrap/Form'
+import {Form} from 'react-bootstrap';
 import uniqid from 'uniqid';
 
 
 export function ShortResponse(props) {
+  console.log('hello')
     return (
       <Form.Group className="mb-3">
-        <Form.Label>{props.index + 1})  {props.question.question}</Form.Label>
+        <Form.Label>{props.index + 1}  {props.question.question}</Form.Label>
         <Form.Control
           id={props.question._id}
-          onChange={(e) => props.onChange(e, props.responseId, 'short response')}
+          onChange={(e) => props.onChange(e, props.response, 'short response')}
           name="short response"
           value={props.question.response.response}
           type="text"
@@ -43,7 +44,7 @@ export function MultipleChoice(props) {
     
       return (
         <Form.Group className="mb-3">
-          <Form.Label>{props.index + 1})  {props.question.question}</Form.Label>
+          <Form.Label>{props.index + 1}  {props.question.question}</Form.Label>
           {answerChoices}
         </Form.Group>
       );
@@ -52,7 +53,7 @@ export function MultipleChoice(props) {
   export function Paragraph(props) {
     return (
       <Form.Group className="mb-3">
-        <Form.Label>{props.index + 1})  {props.question.question}</Form.Label>
+        <Form.Label>{props.index + 1}  {props.question.question}</Form.Label>
         <Form.Control
           id={props.question._id}
           onChange={(e) => props.onChange(e, props.responseId, 'paragraph')}

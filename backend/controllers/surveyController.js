@@ -5,7 +5,9 @@ const Survey = require('../models/surveyModel');
 // get all surveys
 //@route GET /surveys
 const getSurvey = asyncHandler(async (req, res) => {
-    const survey = await Survey.find({id: req.body.id});
+    console.log(req.params.id)
+    const survey = await Survey.findById(req.params.id);
+    console.log(survey)
     res.status(200).json(survey);
 })
 
@@ -18,7 +20,8 @@ const createSurvey = asyncHandler(async (req, res) => {
         user_id: req.body.user_id,
         title: req.body.title,
         description: req.body.description,
-        creationTime: req.body.creationTime
+        creationTime: req.body.creationTime,
+        _id: req.body.survey_id
     })
     
     res.status(200).json(survey);

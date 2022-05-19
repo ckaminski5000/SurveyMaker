@@ -5,7 +5,8 @@ const surveySchema = mongoose.Schema({
     user_id: {type: String, required: true},
     title: {type: String},
     description: {type: String},
-    creationTime: {type: String}
+    creationTime: {type: String},
+    _id: {type: String}
 })
 
 module.exports = mongoose.model('Survey', surveySchema);

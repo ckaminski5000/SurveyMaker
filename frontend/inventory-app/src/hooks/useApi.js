@@ -1,7 +1,28 @@
 // use-api.js
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
+
+export const useCallApi = async (url, fetchOptions) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const serverUrl = 'http://localhost:5000';
+  try {
+    const token = await getAccessTokenSilently();
+    const response = await fetch(`${serverUrl}${url}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }, ...fetchOptions
+    });
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.log(error.error);
+  }
+};
+
+/*
 export const useApi = (url, options = {}) => {
   const { getAccessTokenSilently } = useAuth0();
   const [state, setState] = useState({
@@ -44,4 +65,4 @@ export const useApi = (url, options = {}) => {
     ...state,
     refresh: () => setRefreshIndex(refreshIndex + 1),
   };
-};
+};*/
