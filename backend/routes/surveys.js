@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
-const { getSurvey, createSurvey, updateSurvey, deleteSurvey } = require('../controllers/SurveyController');
+const { getSurvey, createSurvey, updateSurvey, deleteSurvey, saveResponsesToSurvey, getSurveysByUser } = require('../controllers/SurveyController');
 const { protect } = require('../middleware/authmiddleware');
 
 router.get('/:id', getSurvey)
+router.get('/surveys-by-user/:id', getSurveysByUser)
 router.get('/public', getSurvey);
 router.post('/create', createSurvey);
 router.put('/update/:id', updateSurvey);
+router.put('/update-responses/:id', saveResponsesToSurvey);
+
 router.delete('/delete/:id', deleteSurvey)
 
 module.exports = router;

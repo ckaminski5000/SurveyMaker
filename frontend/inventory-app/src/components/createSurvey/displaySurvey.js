@@ -134,6 +134,31 @@ export function DisplaySurvey(props) {
     setSurvey(surveyObject);
   };
 
+  const submitSurvey = async (e) => {
+    e.preventDefault();
+
+    //api call to save the responses to the database
+    const serverUrl = 'http://localhost:5000';
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(`${serverUrl}/api/surveys/update-responses/${survey._id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }, 
+          method: 'PUT',
+          body: JSON.stringify({
+              questions: survey.questions,
+              _id: survey._id
+          })
+      });
+      //if successful, direct user to a confirmation page that the survey has been submitted
+     
+    } catch (error) {
+      console.log(error.error);
+    }
+  }
+
   useEffect(() => {
     setSurvey({ ...survey, _id: props.surveyId })
       //callApi to get survey information from the database
@@ -216,7 +241,7 @@ useEffect(() => {
     <div className="displaySurvey">
       <SurveyTitle survey={survey} />
       {newForm}
-      <Button>Submit Survey</Button>
+      <Button onClick={submitSurvey}>Submit Survey</Button>
     </div>
   );
 }

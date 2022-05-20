@@ -40,3 +40,14 @@ main{
   max-width: 60%;
   margin: 20px auto;
 }
+
+.displaySurveyListTable{
+  max-width: 60%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+table{
+  margin: 0 auto;
+}

@@ -8,6 +8,7 @@ import { Header } from '../components/header/header';
 import { Footer } from '../components/footer/footer';
 import { CreateSurvey } from '../components/createSurvey/createSurvey';
 import { DisplaySurvey } from '../components/createSurvey/displaySurvey';
+import { DisplaySurveyList } from '../components/createSurvey/displaySurveyList';
 
 
 function Dashboard() {
@@ -18,7 +19,7 @@ function Dashboard() {
     loading: true
   });
   const [counter, setCounter] = useState(0);
-  const [view, setView] = useState('createSurvey');
+  const [view, setView] = useState('displaySurveyList');
   const [currentSurveyId, setCurrentSurveyId] = useState('');
   const [userData, setUserData] = useState({
                                       _id: '',
@@ -108,7 +109,13 @@ function Dashboard() {
                   switchView={switchView} 
                   surveyId={currentSurveyId}
                   />
-      default:
+      
+        case 'displaySurveyList':
+          return <DisplaySurveyList
+                  id={userData._id}
+                  switchView={switchView} 
+                  />
+        default:
         return 'Survey Dashboard'
     }
   }

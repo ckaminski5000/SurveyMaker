@@ -1,6 +1,7 @@
 //CRUD options to update database with inventory items
 const asyncHandler = require('express-async-handler');
 const Survey = require('../models/surveyModel');
+const User = require('../models/userModel');
 
 // get all surveys
 //@route GET /surveys
@@ -9,6 +10,40 @@ const getSurvey = asyncHandler(async (req, res) => {
     const survey = await Survey.findById(req.params.id);
     console.log(survey)
     res.status(200).json(survey);
+})
+
+// get surveys by user
+//only sending out survey title, id and number of responses
+//@route GET /surveys-by-user
+const getSurveysByUser = asyncHandler(async (req, res) => {
+    //grab survey ids from database
+    const user = await User.findById(req.params.id)
+    const surveyIds = [...user.surveys]
+
+    if(!user){
+        res.status(400);
+        throw new Error('That user was not found.');
+    }
+
+    //grab surveys from database
+    let surveyList = [];
+    for(let i = 0; i < surveyIds.length; i++){
+        const survey = await Survey.findById(surveyIds[i])
+        if(!survey){
+            console.log('no survey found')
+        }
+        else{
+            const necessaryData = {
+                title: survey.title,
+                responseTotal: survey.questions[0].responses.length,
+                survey_id: survey._id
+            }
+            surveyList.push(necessaryData);
+            
+        } 
+    }
+    //send surveys over
+    res.status(200).json(surveyList);
 })
 
 
@@ -39,6 +74,31 @@ const updateSurvey = asyncHandler(async (req, res) => {
     res.status(200).json(updatedSurvey);
 })
 
+//update surveys with responses
+//@route put
+const saveResponsesToSurvey = asyncHandler(async (req, res) => {
+    const survey = await Survey.findById(req.params.id);
+    if(!survey){
+        res.status(400);
+        throw new Error('That Survey was not found.');
+    }
+    //getting questions and the _id from the body
+    const { questions, _id } = req.body;
+    //new questions comes from database
+    let newQuestions = [...survey.questions];
+
+    newQuestions.forEach((originalQuestion) => {
+        //find matching index
+        let index = questions.findIndex((submittedQuestion) => submittedQuestion._id === originalQuestion._id)
+        //push responses onto responses array
+        originalQuestion.responses.push(questions[index].response)
+    })
+
+    const updatedSurvey = await Survey.findByIdAndUpdate(survey._id, {questions: newQuestions}, {new: true})
+    res.status(200).json(updatedSurvey);
+})
+
+
 
 
 //delete surveys
@@ -58,5 +118,7 @@ module.exports = {
     getSurvey,
     createSurvey,
     updateSurvey,
-    deleteSurvey
+    deleteSurvey, 
+    saveResponsesToSurvey,
+    getSurveysByUser
 }
