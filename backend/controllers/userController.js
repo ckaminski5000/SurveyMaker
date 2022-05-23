@@ -49,10 +49,12 @@ const loginOrCreateUser = asyncHandler(async (req, res) => {
 //@route PUT /Users/update
 const updateUserSurveys = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
-    console.log(user);
     if(!user){
         res.status(400);
         throw new Error('That user was not found.');
+    }
+    else if(user.surveys.findIndex(survey => survey === req.body.survey_id)){
+        res.status(200).json({message: "This survey has already been added to the user's account"})
     }
     else{
         console.log(req.body.survey_id)

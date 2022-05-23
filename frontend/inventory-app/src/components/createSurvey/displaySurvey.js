@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate,  useParams } from "react-router-dom";
 
 import uniqid from "uniqid";
 import {
@@ -14,61 +15,12 @@ import {
 import { useCallApi } from "../../hooks/useApi";
 
 export function DisplaySurvey(props) {
-  const [fakeSurvey, setFakeSurvey] = useState({
-    _id: uniqid("survey-"),
-    title: "Survey Title",
-    description: "Survey Description",
-    questions: [
-      {
-        type: "multiple choice",
-        question: "What is your favorite color?",
-        answer_choices: ["Pink", "purple", "blue", "other"],
-        _id: "question-l394suzc",
-        response: {
-          response: "",
-          time: "",
-          _id: uniqid("response-"),
-        },
-      },
-      {
-        type: "short response",
-        question: "Did you have a good day today?",
-        answer_choices: [],
-        _id: "question-l39650gv",
-        response: {
-          response: "",
-          time: "",
-          _id: uniqid("response-"),
-        },
-      },
-      {
-        type: "true/false",
-        question: "Are you happy",
-        answer_choices: ["True", "False"],
-        _id: "question-l3965dyz",
-        response: {
-          response: "",
-          time: "",
-          _id: uniqid("response-"),
-        },
-      },
-      {
-        type: "paragraph",
-        question: "What did you do today?",
-        answer_choices: [],
-        _id: "question-l392343dyz",
-        response: {
-          response: "",
-          time: "",
-          _id: uniqid("response-"),
-        },
-      },
-    ],
-    user_id: uniqid("user-"),
-  });
+  
   const [survey, setSurvey] = useState({});
   const { getAccessTokenSilently } = useAuth0();
   const [newForm, setNewForm] = useState(<div>Loading...</div>);
+  let navigate = useNavigate(); 
+  let { id } = useParams();
 
   
   const callApi = useCallback(async (url, fetchOptions) => {
@@ -163,7 +115,7 @@ export function DisplaySurvey(props) {
     setSurvey({ ...survey, _id: props.surveyId })
       //callApi to get survey information from the database
       
-        callApi(`/api/surveys/${props.surveyId}`, {
+        callApi(`/api/surveys/${id}`, {
           method: "GET"
         });
       

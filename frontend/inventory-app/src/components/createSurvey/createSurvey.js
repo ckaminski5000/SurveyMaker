@@ -7,42 +7,98 @@ import {
   Paragraph,
   ShortResponse,
   TrueFalse,
-  SurveyTitle
+  SurveyTitle,
 } from "./createQuestionComponents";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 //the id from the survey created on the dashboard will be sent to this page
-//on save and submit, the survey will be sent along with the 
+//on save and submit, the survey will be sent along with the
 //questions to the database for creation as an entry
 
 export function CreateSurvey(props) {
-
-  const { user, isAuthenticated, getAccessTokenSilently} = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   const [survey, setSurvey] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     questions: [],
     user_id: "",
   });
-  const [display, setDisplay] = useState("button");
   const [questionType, setQuestionType] = useState(1);
-  const [showAddQuestionBtn, setShowAddQuestionBtn] = useState(false);
+  const [showAddQuestionBtn, setShowAddQuestionBtn] = useState(true);
   const [questions, setQuestions] = useState([]);
+  let navigate = useNavigate(); 
+  let { id } = useParams();
+
+
+  const callApiToGetSurvey = useCallback(async (url, fetchOptions) => {
+    
+    const serverUrl = 'http://localhost:5000';
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(`${serverUrl}${url}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }, ...fetchOptions
+      });
+
+      const responseData = await response.json();
+
+      //add blank responses to each question
+      let questions = [];
+      
+      //reformat questions from the database
+      responseData.questions.forEach((question) => {
+            let newQuestion = {
+                            _id: question._id,
+                            type: question.type,
+                            question: question.question,
+                            answer_choices: question.answer_choices,
+            }
+            questions.push(newQuestion);
+      });
+
+      let updatedSurvey = {
+        _id: responseData._id,
+        questions: [],
+        title: responseData.title,
+        description: responseData.description,
+        user_id: responseData.user_id,
+        
+      }
+
+      setSurvey(updatedSurvey);
+      setQuestions(questions)
+
+
+    } catch (error) {
+      console.log(error.error);
+    }
+  });
 
   const startSurvey = () => {
-    setDisplay("CreateSurvey");
-    setSurvey({ ...survey, _id: uniqid('survey-'), user_id: props.id});
+    //check if survey_id is being sent,
+    //if survey_id is not sent, set survey as new survey
+    if(id){
+      //make api call to get the survey and set survey
+      callApiToGetSurvey(`/api/surveys/${id}`, {method: "GET"});
+    }
+    else{
+      setSurvey({ ...survey, _id: uniqid("survey-"), user_id: props.id });
+    }
+
   };
 
   const handleSurveyChange = (e) => {
-      let surveyObject = {
-          ...survey,
-        }
-     surveyObject[e.target.name] = e.target.value;
-        setSurvey(surveyObject);
-  }
+    let surveyObject = {
+      ...survey,
+    };
+    surveyObject[e.target.name] = e.target.value;
+    setSurvey(surveyObject);
+  };
 
   const handleQuestionChange = (e) => {
     let questionArray = [...questions];
@@ -71,7 +127,7 @@ export function CreateSurvey(props) {
   const addMoreAnswerChoices = (e, id) => {
     let questionArray = [...questions];
     let questionIndex = questionArray.findIndex(
-      (question) => (id === question._id)
+      (question) => id === question._id
     );
     let answerChoices = questionArray[questionIndex].answer_choices;
     answerChoices.push("");
@@ -132,21 +188,24 @@ export function CreateSurvey(props) {
   };
 
   const deleteQuestion = (e, id) => {
-      let questionArray = [...questions];
-      const questionIndex = questionArray.findIndex((question) => id === question._id)
-      questionArray.splice(questionIndex, 1);
-      setQuestions(questionArray);
-  }
+    let questionArray = [...questions];
+    const questionIndex = questionArray.findIndex(
+      (question) => id === question._id
+    );
+    questionArray.splice(questionIndex, 1);
+    setQuestions(questionArray);
+  };
 
   const callApi = useCallback(async (url, fetchOptions) => {
-    const serverUrl = 'http://localhost:5000';
+    const serverUrl = "http://localhost:5000";
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(`${serverUrl}${url}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }, ...fetchOptions
+          "Content-Type": "application/json",
+        },
+        ...fetchOptions,
       });
 
       const responseData = await response.json();
@@ -156,38 +215,35 @@ export function CreateSurvey(props) {
     }
   });
 
-
   const onSubmitSurvey = (e) => {
     e.preventDefault();
-      
-      //send survey to database
 
-      callApi('/api/surveys/create', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                questions: questions,
-                                title: survey.title,
-                                description: survey.description,
-                                user_id: survey.user_id,
-                                creationTime: new Date(),
-                                survey_id: survey._id
-                            }),
-                            
-      })
+    //send survey to database
 
-      //send id of survey to user in database
-      callApi(`/users/updateSurveys/${survey.user_id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-            survey_id: survey._id
-        }),
-        
-})
+    callApi("/api/surveys/create-update", {
+      method: "POST",
+      body: JSON.stringify({
+        questions: questions,
+        title: survey.title,
+        description: survey.description,
+        user_id: survey.user_id,
+        creationTime: new Date(),
+        survey_id: survey._id,
+      }),
+    });
 
-      //direct user to see a preview of their survey on displaysurvey page
-      //also send current survey id to dashboard
-      props.switchView('displaySurvey');
-      props.sendSurveyId(survey._id);
+    //send id of survey to user in database
+    callApi(`/users/updateSurveys/${survey.user_id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        survey_id: survey._id,
+      }),
+    });
+
+    //direct user to see a preview of their survey on displaysurvey page
+    //also send current survey id to dashboard
+    props.sendSurveyId(survey._id);
+    navigate(`/display-survey/${survey._id}`)
   };
 
   const makeSurvey = () => {
@@ -240,12 +296,7 @@ export function CreateSurvey(props) {
           return null;
       }
     });
-    const displaySubmitBtn = () => {
-      if (questions.length >= 1){
-        return <Button variant="info" onClick={onSubmitSurvey}>Save and Finish Survey</Button>;
-      }
-    }
-    const SubmitBtn = displaySubmitBtn();
+    
 
     const chooseQuestionTypeForm = (
       <>
@@ -264,38 +315,31 @@ export function CreateSurvey(props) {
       </>
     );
 
-    const showAddAndSaveBtns = () =>{
-        if(questions.length >= 1){
-            return (
-                <div >
-                    <Button style={{margin: 10}} variant="success" onClick={() => setShowAddQuestionBtn(false)}>
-                        Add Question
-                    </Button>
-                    {SubmitBtn}
-                </div>
-            )
-        }
-        else{
-            return(
-                <Button variant="info" onClick={() => setShowAddQuestionBtn(false)}>
-                    Add Question
-                </Button>
-            );
-        }
-    }
-
-    let bottomBtns = showAddAndSaveBtns();
-
     return (
-      <div style={{ maxWidth: "50%", margin: 'auto' }}>
-        <SurveyTitle 
-        onChange={handleSurveyChange}
-        survey={survey}
-        />
+      <div style={{ maxWidth: "50%", margin: "auto", paddingTop: 20 }}>
+        <SurveyTitle onChange={handleSurveyChange} survey={survey} />
         {form}
-        {showAddQuestionBtn === true ? 
-          bottomBtns
-         : (
+        {showAddQuestionBtn === true ? (
+          //showAddAndSaveBtns()
+          questions.length >= 1 ? (
+            <div>
+              <Button
+                style={{ margin: 10 }}
+                variant="success"
+                onClick={() => setShowAddQuestionBtn(false)}
+              >
+                Add Question
+              </Button>
+              <Button variant="info" onClick={onSubmitSurvey}>
+                Save and Finish Survey
+              </Button>
+            </div>
+          ) : (
+            <Button variant="info" onClick={() => setShowAddQuestionBtn(false)}>
+              Add Question
+            </Button>
+          )
+        ) : (
           chooseQuestionTypeForm
         )}
       </div>
@@ -307,29 +351,16 @@ export function CreateSurvey(props) {
     displayedSurveyCreator = makeSurvey();
   }, [questions]);
 
-  
+  useEffect(() => {
+      startSurvey();
+  }, [])
 
   return (
     <>
-      <div style={{padding: 20, margin: 'auto'}}>
-        
-            {display === "button" ? (
-              <>  
-              <Button variant="info" onClick={startSurvey}>
-                Click Here to Create a Survey
-              </Button>
-            </> 
-            ) : (
-              <div>
-                  {displayedSurveyCreator}
-                  </div>
-            )}
-          </div>
+      
+          <div>{displayedSurveyCreator}</div>
+       
+      
     </>
   );
 }
-
-
-
-
-  

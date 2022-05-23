@@ -19,7 +19,7 @@ function Dashboard() {
     loading: true
   });
   const [counter, setCounter] = useState(0);
-  const [view, setView] = useState('displaySurveyList');
+  const [view, setView] = useState('createSurvey');
   const [currentSurveyId, setCurrentSurveyId] = useState('');
   const [userData, setUserData] = useState({
                                       _id: '',

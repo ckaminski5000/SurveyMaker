@@ -36,7 +36,7 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
             const necessaryData = {
                 title: survey.title,
                 responseTotal: survey.questions[0].responses.length,
-                survey_id: survey._id
+                _id: survey._id
             }
             surveyList.push(necessaryData);
             
@@ -49,17 +49,49 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
 
 //create new surveys
 //@route POST /surveys/create
-const createSurvey = asyncHandler(async (req, res) => {
-    const survey = await Survey.create({
-        questions: req.body.questions,
-        user_id: req.body.user_id,
-        title: req.body.title,
-        description: req.body.description,
-        creationTime: req.body.creationTime,
-        _id: req.body.survey_id
-    })
+const createandUpdateSurvey = asyncHandler(async (req, res) => {
+    //check if the surveyid is already there
+    //if there, the survey must be updated
+    //if not there, the survey must be created
+    let findSurvey = await Survey.findById(req.body.survey_id);
+    if(findSurvey){
+        //place questions in an array
+        let questions = [...req.body.questions];
+     
+        //check if questions exist in body
+        //if question exists, add responses and array to question
+       questions.map(question => {
+            let index = findSurvey.questions.findIndex(findSurveyQuestion => findSurveyQuestion._id === question._id)
+            if(index > -1){
+                question.responses = findSurvey.questions[index].responses
+            }
+            
+        })
+        console.log(questions)
+        //send survey to database for updating
+        const updatedSurvey = await Survey.findByIdAndUpdate(req.body.survey_id, {questions: questions, 
+                                                                                 title: req.body.title,
+                                                                                 description: req.body.description
+                                                                                         }, {new: true})
+        res.status(200).json(updatedSurvey);
+    }
+    else{
+        const survey = await Survey.create({
+            questions: req.body.questions,
+            user_id: req.body.user_id,
+            title: req.body.title,
+            description: req.body.description,
+            creationTime: req.body.creationTime,
+            _id: req.body.survey_id
+        })
+
+        res.status(200).json(survey);
+    }    
     
-    res.status(200).json(survey);
+    
+    
+    
+    
 })
 
 //update surveys
@@ -116,7 +148,7 @@ const deleteSurvey = asyncHandler(async (req, res) => {
 
 module.exports = {
     getSurvey,
-    createSurvey,
+    createandUpdateSurvey,
     updateSurvey,
     deleteSurvey, 
     saveResponsesToSurvey,
