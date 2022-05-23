@@ -73,19 +73,19 @@ function App() {
           <Route
             path="/create-survey"
             element={
-              <CreateSurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} />
+              <CreateSurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} sendSurveyId={sendSurveyId} />
             }
           />
           <Route
             path="/create-survey/:id"
             element={
-              <CreateSurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} />
+              <CreateSurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} sendSurveyId={sendSurveyId} />
             }
           />
           <Route
             path="/display-survey/:id"
             element={
-              <DisplaySurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} />
+              <DisplaySurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} sendSurveyId={sendSurveyId} />
             }
           />{" "}
           );

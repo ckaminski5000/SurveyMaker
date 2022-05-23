@@ -9,6 +9,7 @@ import {
   TrueFalse,
   SurveyTitle,
 } from "./createQuestionComponents";
+import { AlertDismissible } from './alert';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -29,6 +30,7 @@ export function CreateSurvey(props) {
   const [questionType, setQuestionType] = useState(1);
   const [showAddQuestionBtn, setShowAddQuestionBtn] = useState(true);
   const [questions, setQuestions] = useState([]);
+  const [editingPreviousSurvey, setEditingPreviousSurvey] = useState(false);
   let navigate = useNavigate(); 
   let { id } = useParams();
 
@@ -85,6 +87,7 @@ export function CreateSurvey(props) {
     if(id){
       //make api call to get the survey and set survey
       callApiToGetSurvey(`/api/surveys/${id}`, {method: "GET"});
+      setEditingPreviousSurvey(true);
     }
     else{
       setSurvey({ ...survey, _id: uniqid("survey-"), user_id: props.id });
@@ -218,7 +221,9 @@ export function CreateSurvey(props) {
   const onSubmitSurvey = (e) => {
     e.preventDefault();
 
-    //send survey to database
+    
+    
+       //send survey to database
 
     callApi("/api/surveys/create-update", {
       method: "POST",
@@ -244,6 +249,9 @@ export function CreateSurvey(props) {
     //also send current survey id to dashboard
     props.sendSurveyId(survey._id);
     navigate(`/display-survey/${survey._id}`)
+    
+
+   
   };
 
   const makeSurvey = () => {
@@ -323,6 +331,7 @@ export function CreateSurvey(props) {
           //showAddAndSaveBtns()
           questions.length >= 1 ? (
             <div>
+              {(editingPreviousSurvey && <AlertDismissible />)}
               <Button
                 style={{ margin: 10 }}
                 variant="success"
@@ -330,6 +339,8 @@ export function CreateSurvey(props) {
               >
                 Add Question
               </Button>
+              
+              
               <Button variant="info" onClick={onSubmitSurvey}>
                 Save and Finish Survey
               </Button>
