@@ -6,17 +6,17 @@ import { Person } from "react-bootstrap-icons";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export function Header(props) {
-  const [user, setUser] = useState(null);
-  const { loginWithRedirect } = useAuth0();
+  const [userData, setUserData] = useState(null);
+  const { loginWithRedirect, user } = useAuth0();
   const { logout } = useAuth0();
 
   useEffect(() => {
-    if (!props.name) {
+    if (userData) {
       return;
     } else {
-      setUser({ name: props.name, _id: props._id });
+      setUserData({ name: user.name, _id: user.sub });
     }
-  }, [props.name]);
+  }, [userData]);
 
   return (
     <header>
@@ -25,13 +25,13 @@ export function Header(props) {
           <Navbar.Brand href="#home">SurveyMaker</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-            <Nav.Link href="/create-survey" onClick={props.sendSurveyId(null)}>Create a Survey</Nav.Link>
+            <Nav.Link href="/create-survey">Create a Survey</Nav.Link>
           </Nav>
           <Nav className="ml-auto">
-            {props.name ? (
+            {user ? (
               <>
                 <Navbar.Text>
-                  {props.name} is logged in &nbsp; &nbsp; &nbsp; &nbsp;{" "}
+                  {user.name} is logged in &nbsp; &nbsp; &nbsp; &nbsp;{" "}
                 </Navbar.Text>
                 <Nav.Link
                   onClick={() => logout({ returnTo: "http://localhost:3000/" })}

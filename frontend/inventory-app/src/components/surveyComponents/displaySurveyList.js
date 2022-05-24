@@ -70,8 +70,8 @@ export function DisplaySurveyList(props) {
     if (surveyList) {
       let items = surveyList.map((survey, index) => (
         <tr key={index}>
-          <th><Link to={`/create-survey/${survey._id}`} onClick={props.sendSurveyId(survey._id)}>{survey.title}</Link></th>
-          <th>Get Public Survey Link</th>
+          <th><Link to={`/create-survey/${survey._id}`}>{survey.title}</Link></th>
+          <th><Link to={`/display-survey/${survey._id}`} target="_blank">Get Public Survey Link</Link></th>
           <th>View Results ({survey.responseTotal})</th>
         </tr>
       ));

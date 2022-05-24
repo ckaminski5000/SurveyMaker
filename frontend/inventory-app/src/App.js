@@ -4,11 +4,31 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "./components/header/header";
 import { Footer } from "./components/footer/footer";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import { CreateSurvey } from "./components/surveyComponents/createSurvey";
 import { DisplaySurvey } from "./components/surveyComponents/displaySurvey";
 import { DisplaySurveyList } from "./components/surveyComponents/displaySurveyList";
+import { SurveySubmit } from "./components/surveyComponents/surveySubmit";
 import { Splash } from "./pages/splash";
+
+function BasicLayout() {
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
+  );
+}
+
+function DisplaySurveyLayout() {
+  return <Outlet />;
+}
 
 function App() {
   const { isAuthenticated, getAccessTokenSilently, isLoading, login } =
@@ -50,49 +70,55 @@ function App() {
 
   return (
     <>
-      <main>
-      <Header
-            name={userData !== null && userData.name}
-            id={userData !== null && userData._id}
-            sendSurveyId={sendSurveyId}
-          />
-        <Routes>
-          
-          <Route path="/" element={<Splash />} />
-          userData !== null && (
+      <Routes>
+        <Route path="/" element={<BasicLayout />} >
+          <Route index element={<Splash />} />
           <Route
-            path="/dashboard"
-            element={
-              <DisplaySurveyList
-                id={userData!== null && (userData._id)}
-                loginOrCreateUser={loginOrCreateUser}
-                sendSurveyId={sendSurveyId}
-              />
-            }
-          />
+          path="dashboard"
+          element={
+            <DisplaySurveyList
+              id={userData !== null && userData._id}
+              loginOrCreateUser={loginOrCreateUser}
+              sendSurveyId={sendSurveyId}
+            />
+          }
+        />
           <Route
-            path="/create-survey"
-            element={
-              <CreateSurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} sendSurveyId={sendSurveyId} />
-            }
-          />
+          path="create-survey/*"
+          element={
+            <CreateSurvey
+              id={userData !== null && userData._id}
+              surveyId={currentSurveyId}
+              sendSurveyId={sendSurveyId}
+            />
+          }
+        />
           <Route
-            path="/create-survey/:id"
-            element={
-              <CreateSurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} sendSurveyId={sendSurveyId} />
-            }
-          />
-          <Route
-            path="/display-survey/:id"
-            element={
-              <DisplaySurvey id={userData!== null && (userData._id)} surveyId={currentSurveyId} sendSurveyId={sendSurveyId} />
-            }
-          />{" "}
-          );
-         
-        </Routes>
-        <Footer />
-      </main>
+          path="create-survey/:id/*"
+          element={
+            <CreateSurvey
+              id={userData !== null && userData._id}
+              surveyId={currentSurveyId}
+              sendSurveyId={sendSurveyId}
+            />
+          }
+        />
+        </Route>
+    <Route path="/display-survey" element={<DisplaySurveyLayout />} >
+        <Route
+          path=":id"
+          element={
+            <DisplaySurvey
+              id={userData !== null && userData._id}
+              surveyId={currentSurveyId}
+              sendSurveyId={sendSurveyId}
+            />
+          }
+        />
+
+        <Route path="submit-survey/:id" element={<SurveySubmit />} />
+        </Route>
+      </Routes>
     </>
   );
 }

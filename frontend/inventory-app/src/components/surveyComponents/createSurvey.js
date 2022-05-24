@@ -248,7 +248,7 @@ export function CreateSurvey(props) {
     //direct user to see a preview of their survey on displaysurvey page
     //also send current survey id to dashboard
     props.sendSurveyId(survey._id);
-    navigate(`/display-survey/${survey._id}`)
+    window.open(`/display-survey/${survey._id}`,'_blank');
     
 
    

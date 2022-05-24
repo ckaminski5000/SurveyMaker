@@ -105,7 +105,8 @@ export function DisplaySurvey(props) {
           })
       });
       //if successful, direct user to a confirmation page that the survey has been submitted
-     
+      navigate(`/display-survey/submit-survey/${id}`)
+
     } catch (error) {
       console.log(error.error);
     }

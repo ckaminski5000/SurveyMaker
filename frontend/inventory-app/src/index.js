@@ -9,7 +9,8 @@ import { Router, BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
+  <React.StrictMode>
+ <BrowserRouter>
   
    
     <Auth0Provider
@@ -20,8 +21,10 @@ root.render(
   >
       <App />
     </Auth0Provider>
+    
  
   </BrowserRouter>
+  </React.StrictMode>
   
 );
 
