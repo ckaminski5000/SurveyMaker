@@ -5,9 +5,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Header from "./components/header/header";
 import { Footer } from "./components/footer/footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CreateSurvey } from "./components/createSurvey/createSurvey";
-import { DisplaySurvey } from "./components/createSurvey/displaySurvey";
-import { DisplaySurveyList } from "./components/createSurvey/displaySurveyList";
+import { CreateSurvey } from "./components/surveyComponents/createSurvey";
+import { DisplaySurvey } from "./components/surveyComponents/displaySurvey";
+import { DisplaySurveyList } from "./components/surveyComponents/displaySurveyList";
 import { Splash } from "./pages/splash";
 
 function App() {

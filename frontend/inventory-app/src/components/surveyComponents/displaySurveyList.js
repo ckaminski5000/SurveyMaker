@@ -1,11 +1,14 @@
 import React from "react";
 import { useState, useEffect, useCallback} from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { Table, Container, Col, Row, Button } from "react-bootstrap";
+import { ThreeDots } from '../loader';
 
 export function DisplaySurveyList(props) {
   const [userData, setUserData] = useState(null);
+  const [loginCounter, setLoginCounter] = useState(0);
+  const [SurveyDataCounter, setSurveyDataCounter] = useState(0);
   const [surveyList, setSurveyList] = useState(null);
   const [tableItems, setTableItems] = useState(
     <tr>
@@ -22,7 +25,7 @@ export function DisplaySurveyList(props) {
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(
-        `${serverUrl}/api/surveys/surveys-by-user/${userData._id}`,
+        `${serverUrl}/api/surveys/surveys-by-user/${user.sub}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,22 +43,28 @@ export function DisplaySurveyList(props) {
   });
 
 
-  useEffect(() => {
-    if(isAuthenticated){
-      setUserData({
-            name: user.name,
-            email: user.email,
-            _id: user.sub,
-      });
-      props.loginOrCreateUser(user);
+ useEffect(() => {
+    if(isAuthenticated ){
+
+      if(loginCounter === 0){
+    setLoginCounter(1);
+    props.loginOrCreateUser(user);
+    
+      }
+      
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
-    if (userData) {
-      retrieveSurveyData();
+    if (user) {
+      if(SurveyDataCounter === 0){
+        setSurveyDataCounter(1);
+        retrieveSurveyData();
+        
+      }
+     
     }
-  }, [userData]);
+  }, [user]);
 
   useEffect(() => {
     if (surveyList) {
@@ -100,3 +109,4 @@ export function DisplaySurveyList(props) {
     </Container>
   );
 }
+
