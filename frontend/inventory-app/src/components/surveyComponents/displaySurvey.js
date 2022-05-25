@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container, Row, Col, Form } from "react-bootstrap";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate,  useParams } from "react-router-dom";
 
@@ -73,17 +73,21 @@ export function DisplaySurvey(props) {
     }
   });
 
-  const handleChange = (e, responseId, responseType) => {
+  const handleChange = (e, responseId, responseType, answerValue) => {
     let surveyObject = { ...survey };
     let index = surveyObject.questions.findIndex(
       (question) => question.response._id === responseId
     );
-    surveyObject.questions[index].response = {
-      ...surveyObject.questions[index].response,
-      response: e.target.value,
-      time: new Date(),
-    };
-    setSurvey(surveyObject);
+    
+      surveyObject.questions[index].response = {
+        ...surveyObject.questions[index].response,
+        response: e.target.value,
+        time: new Date(),
+      };
+      setSurvey(surveyObject);
+    
+    
+    
   };
 
   const submitSurvey = async (e) => {
@@ -113,7 +117,7 @@ export function DisplaySurvey(props) {
   }
 
   useEffect(() => {
-    setSurvey({ ...survey, _id: props.surveyId })
+    setSurvey({ ...survey, _id: id })
       //callApi to get survey information from the database
       
         callApi(`/api/surveys/${id}`, {
@@ -121,7 +125,7 @@ export function DisplaySurvey(props) {
         });
       
     
-  }, [props.surveyId]);
+  }, []);
 
 
 

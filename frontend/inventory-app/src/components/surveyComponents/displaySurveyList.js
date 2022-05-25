@@ -70,9 +70,9 @@ export function DisplaySurveyList(props) {
     if (surveyList) {
       let items = surveyList.map((survey, index) => (
         <tr key={index}>
-          <th><Link to={`/create-survey/${survey._id}`}>{survey.title}</Link></th>
-          <th><Link to={`/display-survey/${survey._id}`} target="_blank">Get Public Survey Link</Link></th>
-          <th>View Results ({survey.responseTotal})</th>
+          <th className="dashboardTableLarge"><Link to={`/create-survey/${survey._id}`} style={{textDecoration: 'none'}}>{survey.title}</Link></th>
+          <th className="dashboardTableSmall"><Link className="linkSmall" to={`/display-survey/${survey._id}`} target="_blank" style={{textDecoration: 'none'}}>Public Survey Link</Link></th>
+          <th className="dashboardTableSmall"><Link className="linkSmall" to={`/display-results/${survey._id}`} style={{textDecoration: 'none'}}> Results ({survey.responseTotal})</Link></th>
         </tr>
       ));
       setTableItems(items);
@@ -92,14 +92,17 @@ export function DisplaySurveyList(props) {
         </Row> 
         <Row>
           <Col sm={12} lg={12} className="text-center">
-              <Button onClick={onCreateSurveyClick} variant="success" style={{width: '20%', marginBlock: 10}}>
-                Click Here to Create a Survey
+              <Button onClick={onCreateSurveyClick} variant="success" className="createSrvyBtn" style={{borderRadius: 10, borderWidth: 1}}>
+                Click Here to Create a New Survey
               </Button>
+              <br /><br />
           </Col>
         </Row>
+
         <Row>
             <Col>
-                <Table striped bordered hover>
+              <h4 style={{textAlign: 'center'}}>Your Surveys</h4>
+                <Table striped bordered hover style={{width: '50%', textAlign: 'center'}}>
                     <tbody>{tableItems}</tbody>
                 </Table>
             </Col>

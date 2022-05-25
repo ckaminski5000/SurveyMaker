@@ -15,6 +15,7 @@ import { DisplaySurvey } from "./components/surveyComponents/displaySurvey";
 import { DisplaySurveyList } from "./components/surveyComponents/displaySurveyList";
 import { SurveySubmit } from "./components/surveyComponents/surveySubmit";
 import { Splash } from "./pages/splash";
+import { DisplayResults } from './components/surveyComponents/displayResults';
 
 function BasicLayout() {
   return (
@@ -101,6 +102,12 @@ function App() {
               surveyId={currentSurveyId}
               sendSurveyId={sendSurveyId}
             />
+          }
+        />
+        <Route
+          path="display-results/:id/*"
+          element={
+            <DisplayResults />
           }
         />
         </Route>

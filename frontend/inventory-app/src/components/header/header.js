@@ -14,7 +14,9 @@ export function Header(props) {
     if (userData) {
       return;
     } else {
-      setUserData({ name: user.name, _id: user.sub });
+      if(user){
+        setUserData({ name: user.name, _id: user.sub });
+      }
     }
   }, [userData]);
 
