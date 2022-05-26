@@ -2,7 +2,10 @@
 
 import { Form, Table, Container, Row, Col, Button, } from "react-bootstrap";
 import uniqid from "uniqid";
-import { PieChart, Pie } from "recharts";
+import { PieChart, Pie, Cell, LabelList } from "recharts";
+import {useState} from 'react';
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 
 
 export function ShortResponseResults(props) {
@@ -12,25 +15,25 @@ export function ShortResponseResults(props) {
     const responses = props.question.responses.map((question, index) => (
         <tr key={index}>
             <th>
-                {index})
+                {index + 1})
 
             </th>
             <th>
-                question.response.response
+                {question.response.response}
             </th>
         </tr>
     ))
 
   return (
 
-    <Row>
-      
-    <Col>
-    <h4 style={{ textAlign: "center" }} className="text-muted">
+    <Row >
+      <Col lg={3} sm={12}></Col>
+    <Col lg={3} sm={12} className="surveyQs resultsQs" style={{flexGrow: 6, margin: 10}}>
+    <h4 style={{ textAlign: "center", fontWeight: 'bold' }} >
   Question {props.index}: {props.question.question}
     </h4>
- 
-    <Table striped bordered hover>
+    <div style={{overflowY: 'scroll', height: 300}}>
+    <Table striped bordered hover >
   <thead>
     <tr>
       <th>Responses</th>
@@ -41,34 +44,75 @@ export function ShortResponseResults(props) {
     
     </tbody>
     </Table>
+    </div>
     </Col>
+    <Col lg={3} sm={12} ></Col>
     </Row>
   );
 }
 
 export function MultipleChoiceResults(props) {
-    //display question
-    //display pie chart with answer choices
 
+  const [colors, setColors] = useState(["#86c036", "#92C8E8", "#FA339A", "#207720", "#F6EF00", "#876CB4", "#EC8C32", "#40A3C1", "#A637Ea", "#C8F57A" ])
+  
  //count number of responses of each type
- let resultsArray = [];
+
+  let resultsArray = [];
  props.question.answer_choices.forEach(answer => {
    //search in responses for number of answers
    let count = props.question.responses.filter(response => response.response === answer).length;
-   console.log(count);
-   resultsArray.push({name: answer, value: count})
+   resultsArray.push({name: answer, y: count})
  })
+
+
+  const options = {
+    chart: {
+      plotBackgroundColor: 'rgb(211, 234, 240)',
+      plotBorderWidth: 0,
+      plotShadow: false,
+      type: 'pie'
+  },
+  title: '',
+    plotOptions: {
+      pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+         
+          dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+          }
+      }
+  },
+  accessibility: {
+    point: {
+        valueSuffix: '%'
+    }
+},
+    series: [{
+      name: '',
+      colorByPoint: true,
+      data: resultsArray
+    }]
+  }
+  
+ 
 
   return (
     <>
-    <Row>
-      <Col>
-      <h4>Question {props.index}: {props.question.question}</h4>
-      <PieChart width={730} height={250}>
-        <Pie data={resultsArray} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={50} fill="#8884d8" />
-      </PieChart>
+    
+    <Row >
+      <Col lg={3} sm={12} className='resultsbg' ></Col>
+      <Col lg={3} sm={12} className="surveyQs resultsQs" style={{flexGrow: 6, margin: 10}}>
+      <h4 style={{fontWeight: 'bold', textAlign: 'center'}}>Question {props.index}: {props.question.question}</h4>
+      <HighchartsReact
+    highcharts={Highcharts}
+    
+    options={options}
+  />
 
       </Col>
+      <Col lg={3} sm={12} className='resultsbg' ></Col>
     </Row>
     </>
   );

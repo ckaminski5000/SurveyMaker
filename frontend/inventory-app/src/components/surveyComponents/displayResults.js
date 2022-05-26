@@ -67,10 +67,10 @@ export function DisplayResults() {
 
 
   return (
-    <div>
-      <h2>Survey Results for</h2>
-      <h4>{survey ? survey.title: null}</h4>
-      <Container>
+    <div className='resultsbg'>
+      <h2 className="resultsTitle">{survey ? survey.title: null}</h2>
+      <h4 className='resultsSurveyTitle'>Survey Results</h4>
+      <Container className='resultsbg' >
           {results}
       </Container>
     </div>

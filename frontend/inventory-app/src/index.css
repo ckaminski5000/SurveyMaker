@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100%;
 }
 
 code {
@@ -22,6 +23,11 @@ main{
   padding: 20px;
   background-color: rgb(211, 234, 240);
   position: relative;
+}
+
+.resultsQs{
+  flex-grow: 5;
+  margin: 10;
 }
 
 .closeBtn{
@@ -69,4 +75,25 @@ table{
 .createSrvyBtn{
   width: 40%;
   margin-top: 10;
+}
+
+.resultsTitle{
+  font-weight: bold;
+  text-align: center;
+  padding-top: 20px;
+  background-color: aliceblue;
+  margin-bottom: 0px;
+}
+
+.resultsSurveyTitle{
+  text-align: center;
+  background-color: aliceblue;
+  padding-bottom: 15px;
+  margin-top: 0px;
+  border-bottom: rgb(201, 210, 218) solid 3px;
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.resultsbg{
+  background-color: rgb(231, 243, 246);
 }
