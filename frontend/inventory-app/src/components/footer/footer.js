@@ -3,8 +3,8 @@ import {Container, Row, Col } from 'react-bootstrap';
 
 export function Footer(props) {
   return (
-    <footer>
-        <Container>
+    <footer style={{height: '10vh', backgroundColor: '#008cba', color: 'white'}}>
+        <Container fluid>
             <Row>
                 <Col className='text-center py-2'>
                     Copyright &copy; Ckaminski Labs

@@ -21,7 +21,11 @@ function BasicLayout() {
   return (
     <>
       <Header />
-      <Outlet />
+      
+        <Outlet />
+     
+      
+
       <Footer />
     </>
   );

@@ -21,10 +21,10 @@ export function Header(props) {
   }, [userData]);
 
   return (
-    <header>
+    <header style={{height: '8vh'}}>
       <Navbar bg="primary" variant="dark">
         <Container>
-          <Navbar.Brand href="#home">SurveyMaker</Navbar.Brand>
+          <Navbar.Brand href="/dashboard">SurveyMaker</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
             <Nav.Link href="/create-survey">Create a Survey</Nav.Link>

@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate,  useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { ShortResponseResults, MultipleChoiceResults } from './displayResultsComponents';
-import { Container, Row, Col, Button} from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner} from 'react-bootstrap';
 import { ThreeDots } from 'react-bootstrap-icons';
 
 
@@ -11,7 +11,7 @@ export function DisplayResults() {
   let navigate = useNavigate(); 
   let { id } = useParams();
   const [survey, setSurvey] = useState(null);
-  const [results, setResults] = useState(<div><ThreeDots /></div>)
+  const [results, setResults] = useState(<div style={{textAlign: 'center', padding: 20}}><Spinner animation="border" /></div>)
   const { getAccessTokenSilently } = useAuth0();
 
 

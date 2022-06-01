@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Row, Col, Form } from "react-bootstrap";
+import { Button, Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import { useState, useEffect, useCallback } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate,  useParams } from "react-router-dom";
@@ -18,7 +18,7 @@ export function DisplaySurvey(props) {
   
   const [survey, setSurvey] = useState({});
   const { getAccessTokenSilently } = useAuth0();
-  const [newForm, setNewForm] = useState(<div>Loading...</div>);
+  const [newForm, setNewForm] = useState(<div style={{textAlign: 'center', padding: 20}}><Spinner animation="border" /></div>);
   let navigate = useNavigate(); 
   let { id } = useParams();
 
@@ -132,7 +132,7 @@ export function DisplaySurvey(props) {
 useEffect(() => {
   //display survey
   if(survey.title === undefined){
-    setNewForm(<div>Loading...</div>)
+    setNewForm(<div style={{textAlign: 'center', padding: 20}}><Spinner animation="border" /></div>)
   }
   else{
     let form = survey.questions.map((question, index) => {

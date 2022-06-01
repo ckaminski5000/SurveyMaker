@@ -28,6 +28,7 @@ main{
 .resultsQs{
   flex-grow: 5;
   margin: 10;
+  font-weight: ;
 }
 
 .closeBtn{
@@ -75,6 +76,7 @@ table{
 .createSrvyBtn{
   width: 40%;
   margin-top: 10;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
 .resultsTitle{
@@ -94,6 +96,38 @@ table{
   box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
+.dashboardTitle{
+  text-align: center;
+  background-color: aliceblue;
+  padding-bottom: 15px;
+  margin-top: 0px;
+  border-bottom: rgb(231, 241, 249) solid 3px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+}
+
 .resultsbg{
   background-color: rgb(231, 243, 246);
+}
+
+.dashboardbg{
+  background-color: rgb(237, 244, 245);
+  width: 100%;
+}
+
+.splashTop{
+  background-color: aliceblue;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.container{
+  max-width: 100%;
+}
+
+.splashText{
+  text-align: left;
+}
+
+.splashImg{
+  width: 100%;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }

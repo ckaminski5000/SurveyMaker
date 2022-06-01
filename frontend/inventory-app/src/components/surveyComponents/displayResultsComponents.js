@@ -12,14 +12,11 @@ export function ShortResponseResults(props) {
   // display question
   //display answers in a table format
   
-    const responses = props.question.responses.map((question, index) => (
+    const responses = props.question.responses.map((response, index) => (
         <tr key={index}>
-            <th>
-                {index + 1})
-
-            </th>
-            <th>
-                {question.response.response}
+            
+            <th style={{fontWeight: 'normal'}}>
+            {index + 1})  {response.response}
             </th>
         </tr>
     ))
@@ -29,7 +26,7 @@ export function ShortResponseResults(props) {
     <Row >
       <Col lg={3} sm={12}></Col>
     <Col lg={3} sm={12} className="surveyQs resultsQs" style={{flexGrow: 6, margin: 10}}>
-    <h4 style={{ textAlign: "center", fontWeight: 'bold' }} >
+    <h4 style={{ textAlign: "center", fontWeight: 500 }} >
   Question {props.index}: {props.question.question}
     </h4>
     <div style={{overflowY: 'scroll', height: 300}}>
@@ -70,14 +67,15 @@ export function MultipleChoiceResults(props) {
       plotBackgroundColor: 'rgb(211, 234, 240)',
       plotBorderWidth: 0,
       plotShadow: false,
-      type: 'pie'
+      type: 'pie',
+  
   },
   title: '',
     plotOptions: {
       pie: {
           allowPointSelect: true,
           cursor: 'pointer',
-         
+          size: 250,
           dataLabels: {
               enabled: true,
               format: '<b>{point.name}</b>: {point.percentage:.1f} %'
