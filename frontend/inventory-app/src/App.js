@@ -1,7 +1,7 @@
 import "./bootstrap.min.css";
 import "./index.css";
 import { useEffect, useState, useCallback } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import Header from "./components/header/header";
 import { Footer } from "./components/footer/footer";
 import {
@@ -9,6 +9,8 @@ import {
   Routes,
   Route,
   Outlet,
+  useLocation,
+  useNavigate
 } from "react-router-dom";
 import { CreateSurvey } from "./components/surveyComponents/createSurvey";
 import { DisplaySurvey } from "./components/surveyComponents/displaySurvey";
@@ -16,6 +18,7 @@ import { DisplaySurveyList } from "./components/surveyComponents/displaySurveyLi
 import { SurveySubmit } from "./components/surveyComponents/surveySubmit";
 import { Splash } from "./pages/splash";
 import { DisplayResults } from './components/surveyComponents/displayResults';
+import { NotFound } from './pages/notfound';
 
 function BasicLayout() {
   return (
@@ -81,27 +84,32 @@ function App() {
           <Route
           path="dashboard"
           element={
-            <DisplaySurveyList
+            
+           <DisplaySurveyList
               id={userData !== null && userData._id}
               loginOrCreateUser={loginOrCreateUser}
-              sendSurveyId={sendSurveyId}
-            />
+              sendSurveyId={sendSurveyId} />
+            
+            
           }
         />
           <Route
           path="create-survey/*"
           element={
-            <CreateSurvey
+            <PrivateView
+            component={CreateSurvey}
               id={userData !== null && userData._id}
               surveyId={currentSurveyId}
               sendSurveyId={sendSurveyId}
             />
+            
           }
         />
           <Route
           path="create-survey/:id/*"
           element={
-            <CreateSurvey
+            <PrivateView
+            component={CreateSurvey}
               id={userData !== null && userData._id}
               surveyId={currentSurveyId}
               sendSurveyId={sendSurveyId}
@@ -111,9 +119,12 @@ function App() {
         <Route
           path="display-results/:id/*"
           element={
-            <DisplayResults />
+            <PrivateView
+            component={DisplayResults} />
+           
           }
         />
+         <Route path="*" element={<NotFound />} />
         </Route>
     <Route path="/display-survey" element={<DisplaySurveyLayout />} >
         <Route
@@ -132,6 +143,17 @@ function App() {
       </Routes>
     </>
   );
+}
+
+
+function PrivateView({ component, ...propsForComponent }) {
+  const { isAuthenticated, loginWithRedirect} = useAuth0();
+  let location = useLocation();
+  let navigate = useNavigate();
+
+  const Navigate = withAuthenticationRequired(component);
+
+  return <Navigate {...propsForComponent} />;
 }
 
 export default App;

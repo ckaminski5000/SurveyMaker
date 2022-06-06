@@ -11,7 +11,7 @@ export function Splash() {
 
   
   return (
-    <main style={{height: '80vh', backgroundColor: 'aliceblue'}}>
+    <main className='main' style={{ backgroundColor: 'aliceblue'}}>
     <Container  fluid>
       <Row>
         <Col sm={12} md={3}></Col>

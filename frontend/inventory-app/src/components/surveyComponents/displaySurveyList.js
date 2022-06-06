@@ -62,10 +62,10 @@ export function DisplaySurveyList(props) {
       }
       
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    if (user) {
+    if (userData) {
       if(SurveyDataCounter === 0){
         setSurveyDataCounter(1);
         retrieveSurveyData();
@@ -73,7 +73,7 @@ export function DisplaySurveyList(props) {
       }
      
     }
-  }, [user]);
+  }, [userData]);
 
   useEffect(() => {
     if (surveyList) {
@@ -96,7 +96,7 @@ export function DisplaySurveyList(props) {
   }
 
   return (
-  
+  <main className="main" style={{backgroundColor: 'rgb(237, 244, 245)'}}>
     <Container className="dashboardbg p-0" fluid  >
        <Row className={tableItems ? "dashboardTitle": null} style={{paddingTop: 20}} >
             <Col sm={12} lg={12} ><h2 style={{textAlign: 'center', paddingTop: 20, fontWeight: 'bold'}} >Survey Dashboard</h2>
@@ -126,6 +126,7 @@ export function DisplaySurveyList(props) {
         </Row>)}
       
     </Container>
+    </main>
     
   );
 }

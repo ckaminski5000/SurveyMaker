@@ -90,10 +90,19 @@ export function CreateSurvey(props) {
       setEditingPreviousSurvey(true);
     }
     else{
-      setSurvey({ ...survey, _id: uniqid("survey-"), user_id: props.id });
+      setSurvey({ ...survey, _id: uniqid("survey-")});
     }
 
   };
+
+  //updated userid info
+  useEffect(() => {
+    if(user && isAuthenticated){
+      let updatedSurvey = {...survey, user_id: user.sub};
+      setSurvey(updatedSurvey);
+    }
+
+  }, [user])
 
   const handleSurveyChange = (e) => {
     let surveyObject = {
@@ -237,13 +246,6 @@ export function CreateSurvey(props) {
       }),
     });
 
-    //send id of survey to user in database
-    callApi(`/users/updateSurveys/${survey.user_id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        survey_id: survey._id,
-      }),
-    });
 
     //direct user to see a preview of their survey on displaysurvey page
     //also send current survey id to dashboard

@@ -57,6 +57,7 @@ const createandUpdateSurvey = asyncHandler(async (req, res) => {
     //if there, the survey must be updated
     //if not there, the survey must be created
     let findSurvey = await Survey.findById(req.body.survey_id);
+    console.log(findSurvey)
     if(findSurvey){
         //place questions in an array
         let questions = [...req.body.questions];
@@ -70,7 +71,7 @@ const createandUpdateSurvey = asyncHandler(async (req, res) => {
             }
             
         })
-        console.log(questions)
+        
         //send survey to database for updating
         const updatedSurvey = await Survey.findByIdAndUpdate(req.body.survey_id, {questions: questions, 
                                                                                  title: req.body.title,
@@ -88,7 +89,19 @@ const createandUpdateSurvey = asyncHandler(async (req, res) => {
             _id: req.body.survey_id
         })
 
-        res.status(200).json(survey);
+        let user = await User.findById(req.body.user_id);
+        if(user){
+             //push this survey to the user too
+             const newSurveys = [...user.surveys];
+             newSurveys.push(req.body.survey_id);
+             let updatedUser = await User.findOneAndUpdate({_id: req.body.user_id}, {surveys: newSurveys});
+             console.log(updatedUser)
+             res.status(200).json(updatedUser);
+        }
+        else{
+            res.status(402).json('This user was not found.  The survey might have been added to the database though.')
+        }
+  
     }    
     
     
