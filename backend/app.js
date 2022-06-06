@@ -71,6 +71,13 @@ app.use(function(err, req, res, next) {
   })
 });
 
+app.use(express.static(path.join(__dirname, 'build')));
+
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', '../frontend/inventory-app/public/index.html'));
+});
+
 app.get('/authorized', function (req, res) {
   res.send('Secured Resource');
   });
