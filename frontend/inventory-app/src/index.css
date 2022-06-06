@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
+  background: aliceblue;
 }
 
 code {
@@ -14,7 +15,26 @@ code {
 }
 
 main{
-  min-height: 85vh;
+  min-height: calc(100vh - 100px);
+}
+
+.headerLink{
+  color: rgb(220, 230, 239);
+  
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+}
+
+.headerLink:hover{
+  color: rgb(227, 235, 243);
+}
+
+.footer{
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 50px;
 }
 
 .surveyQs{
@@ -28,7 +48,6 @@ main{
 .resultsQs{
   flex-grow: 5;
   margin: 10;
-  font-weight: ;
 }
 
 .closeBtn{
@@ -119,15 +138,13 @@ table{
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
-.container{
-  max-width: 100%;
-}
+
 
 .splashText{
   text-align: left;
 }
 
 .splashImg{
-  width: 100%;
+  width: 80%;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }

@@ -24,6 +24,9 @@ const getSurveysByUser = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error('That user was not found.');
     }
+    else if(surveyIds.length === 0){
+        res.status(401).json('No surveys were found')
+    }
 
     //grab surveys from database
     let surveyList = [];

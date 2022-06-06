@@ -67,6 +67,7 @@ export function DisplayResults() {
 
 
   return (
+    
     <div className='resultsbg'>
       <h2 className="resultsTitle">{survey ? survey.title: null}</h2>
       <h4 className='resultsSurveyTitle'>Survey Results</h4>
@@ -74,6 +75,7 @@ export function DisplayResults() {
           {results}
       </Container>
     </div>
+   
   )
 }
 

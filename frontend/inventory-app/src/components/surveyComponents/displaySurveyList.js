@@ -36,7 +36,14 @@ export function DisplaySurveyList(props) {
 
       const responseData = await response.json();
       //store survey titles and responses in state
-      setSurveyList(responseData);
+      if(responseData === "No surveys were found"){
+        setTableItems(null);
+
+      }
+      else{
+        setSurveyList(responseData);
+      }
+      
     } catch (error) {
       console.log(error.error);
     }
@@ -44,11 +51,13 @@ export function DisplaySurveyList(props) {
 
 
  useEffect(() => {
+   console.log(isAuthenticated)
     if(isAuthenticated ){
 
       if(loginCounter === 0){
     setLoginCounter(1);
     props.loginOrCreateUser(user);
+    setUserData(user);
     
       }
       
@@ -68,6 +77,7 @@ export function DisplaySurveyList(props) {
 
   useEffect(() => {
     if (surveyList) {
+      console.log(surveyList)
       let items = surveyList.map((survey, index) => (
         <tr key={index}>
           <th className="dashboardTableLarge"><Link to={`/create-survey/${survey._id}`} style={{textDecoration: 'none'}}>{survey.title}</Link></th>
@@ -77,6 +87,7 @@ export function DisplaySurveyList(props) {
       ));
       setTableItems(items);
     }
+   
   }, [surveyList]);
 
   const onCreateSurveyClick = () => {
@@ -85,9 +96,10 @@ export function DisplaySurveyList(props) {
   }
 
   return (
-    <Container className="dashboardbg p-0" fluid >
-       <Row className="dashboardTitle" >
-            <Col ><h2 style={{textAlign: 'center', paddingTop: 20, fontWeight: 'bold'}} >Survey Dashboard</h2>
+  
+    <Container className="dashboardbg p-0" fluid  >
+       <Row className={tableItems ? "dashboardTitle": null} style={{paddingTop: 20}} >
+            <Col sm={12} lg={12} ><h2 style={{textAlign: 'center', paddingTop: 20, fontWeight: 'bold'}} >Survey Dashboard</h2>
              </Col>
         </Row> 
         <Row >
@@ -99,8 +111,8 @@ export function DisplaySurveyList(props) {
           </Col>
         </Row>
 
-        <Row  >
-            <Col >
+       {tableItems && (<Row  >
+            <Col sm={12} lg={12}>
               <h4 style={{textAlign: 'center', fontWeight: 'bold'}} >Your Surveys</h4>
               <div style={{borderTop: 'solid', paddingTop: 8}}>
                 
@@ -111,9 +123,10 @@ export function DisplaySurveyList(props) {
                 
             </Col>
 
-        </Row>
+        </Row>)}
       
     </Container>
+    
   );
 }
 

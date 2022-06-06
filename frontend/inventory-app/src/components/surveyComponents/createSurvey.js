@@ -324,6 +324,7 @@ export function CreateSurvey(props) {
     );
 
     return (
+      
       <div style={{ maxWidth: "50%", margin: "auto", paddingTop: 20 }}>
         <SurveyTitle onChange={handleSurveyChange} survey={survey} />
         {form}
@@ -367,11 +368,11 @@ export function CreateSurvey(props) {
   }, [])
 
   return (
-    <>
+
       
-          <div>{displayedSurveyCreator}</div>
+          <main className="main" style={{marginBottom: 20}}>{displayedSurveyCreator}</main>
        
       
-    </>
+    
   );
 }
