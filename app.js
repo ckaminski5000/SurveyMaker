@@ -28,10 +28,10 @@ algorithms: ['RS256']
 
 const port = process.env.PORT || 3000;
 
-var indexRouter = require('./routes/index');
-var questionsRouter = require('./routes/questions');
-var surveysRouter = require('./routes/surveys');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./backend/routes/index');
+var questionsRouter = require('./backend/routes/questions');
+var surveysRouter = require('./backend/routes/surveys');
+var usersRouter = require('./backend/routes/users');
 
 
 connectDB();
@@ -75,7 +75,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', '../frontend/inventory-app/public/index.html'));
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.get('/authorized', function (req, res) {
