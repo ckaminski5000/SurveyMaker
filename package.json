@@ -2,8 +2,8 @@
   "name": "inventoryapp",
   "version": "0.0.0",
   "private": true,
-  "engines":{
-      "node": "16.4.2"
+  "engines": {
+    "node": "16.4.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,6 +16,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
+    "concurrently": "^7.2.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "debug": "~2.6.9",

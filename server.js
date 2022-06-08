@@ -13,7 +13,6 @@ const { auth } = require('express-openid-connect');
 
 const port = process.env.PORT || 3000;
 
-var indexRouter = require('./backend/routes/index');
 var questionsRouter = require('./backend/routes/questions');
 var surveysRouter = require('./backend/routes/surveys');
 var usersRouter = require('./backend/routes/users');
@@ -29,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors({credentials: true, origin: "http://localhost:3000"}));
 
-app.use('/', indexRouter);
+
 app.use('/api/questions', questionsRouter);
 app.use('/api/surveys', surveysRouter);
 app.use('/users', usersRouter);
@@ -56,7 +55,12 @@ app.use(function(err, req, res, next) {
 });
 
 if(process.env.NODE_ENV === 'production'){
-  app.use(express.static('frontend/inventory-app/public/'));
+  app.use(express.static(path.join(_dirname,'frontend/inventory-app/build', 'index.html')));
+
+  // Handle React routing, return all requests to React app
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'frontend/inventory-app/build', 'index.html'));
+  });
 
 }
 
