@@ -5,7 +5,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./server.js",
-    "server": "nodemon ./server.js"
+    "server": "nodemon ./server.js",
+    "build": "cd frontend/inventory-app && npm run build",
+    "install-client": "cd frontend/inventory-app && npm install",
+    "heorku-postbuild": "npm run install-client && npm run build"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

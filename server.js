@@ -7,21 +7,6 @@ const dotenv = require('dotenv').config();
 const { connectDB } = require('./backend/config/db');
 const cors = require('cors')
 const { auth } = require('express-openid-connect');
-var { expressjwt: jwt } = require('express-jwt');
-console.log(jwt);
-var jwks = require('jwks-rsa');
-
-var jwtCheck = jwt({
-  secret: jwks.expressJwtSecret({
-      cache: true,
-      rateLimit: true,
-      jwksRequestsPerMinute: 5,
-      jwksUri: 'https://dev-v-oprh9i.us.auth0.com/.well-known/jwks.json'
-}),
-audience: 'http://localhost:5000',
-issuer: 'https://dev-v-oprh9i.us.auth0.com/',
-algorithms: ['RS256']
-});
 
 
 
@@ -43,7 +28,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors({credentials: true, origin: "http://localhost:3000"}));
-app.use(jwtCheck);
 
 app.use('/', indexRouter);
 app.use('/api/questions', questionsRouter);
@@ -71,12 +55,11 @@ app.use(function(err, req, res, next) {
   })
 });
 
-app.use(express.static(path.join(__dirname, 'build')));
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('frontend/inventory-app/public/index.html'));
 
+}
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 
 app.get('/authorized', function (req, res) {
   res.send('Secured Resource');
@@ -84,4 +67,4 @@ app.get('/authorized', function (req, res) {
 
 app.listen(port, () => console.log('CORS-enabled web server started on port ' + port));
 
-module.exports = {app, jwtCheck};
+module.exports = {app};
