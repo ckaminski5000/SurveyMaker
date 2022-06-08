@@ -11,7 +11,7 @@ const { auth } = require('express-openid-connect');
 
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 var questionsRouter = require('./backend/routes/questions');
 var surveysRouter = require('./backend/routes/surveys');
@@ -55,7 +55,7 @@ app.use(function(err, req, res, next) {
 });
 
 if(process.env.NODE_ENV === 'production'){
-  app.use(express.static(path.join(__dirname,'frontend/inventory-app/build', 'index.html')));
+  app.use(express.static(path.join(__dirname,'frontend/inventory-app/build')));
 
   // Handle React routing, return all requests to React app
   app.get('*', function(req, res) {
