@@ -55,7 +55,7 @@ app.use(function(err, req, res, next) {
 });
 
 if(process.env.NODE_ENV === 'production'){
-  app.use(express.static(path.join(__dirname,'frontend/inventory-app/build')));
+  app.use(express.static(path.join(__dirname,'frontend/inventory-app/public')));
 
   // Handle React routing, return all requests to React app
   app.get('*', function(req, res) {
