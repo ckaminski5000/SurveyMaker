@@ -2,7 +2,7 @@
 
 # dependencies
 /frontend/inventory-app/node_modules
-/node_modules
+**/node_modules
 /.pnp
 .pnp.js
 /backend/.env
