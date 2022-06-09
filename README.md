@@ -44,7 +44,7 @@ The following technologies are used in this app:
   
 7. In index.js in the frontend/inventory-app folder, change the clientId and domain in the Auth0Provider function.  You can get this information from your app on Auth0.
    
-8. In constants.js in the frontend/inventory-app folder, you will need to change the url for production for the prodRedirectUri to whatever url you will use to redirect users to after login.  It should be in the form of "[insertUrlhere]/dashboard"
+8. In constants.js in the frontend/inventory-app folder, you will need to change the url for production for the prodRedirectUri variable to whatever url you will use to redirect users to after login.  It should be in the form of "[insertUrlhere]/dashboard"
    
 
 9.  `npm run dev` to launch the application 
