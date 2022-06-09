@@ -19,7 +19,7 @@ import { SurveySubmit } from "./components/surveyComponents/surveySubmit";
 import { Splash } from "./pages/splash";
 import { DisplayResults } from './components/surveyComponents/displayResults';
 import { NotFound } from './pages/notfound';
-import serverUrl from "../../variables/constants.js";
+import serverUrl from "./variables/constants.js";
 
 
 function BasicLayout() {
