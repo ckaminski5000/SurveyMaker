@@ -91,7 +91,7 @@ export function CreateSurvey(props) {
       setEditingPreviousSurvey(true);
     }
     else{
-      setSurvey({ ...survey, _id: uniqid("survey-")});
+      setSurvey({ ...survey, _id: uniqid("survey-"), user_id: user.sub});
     }
 
   };
