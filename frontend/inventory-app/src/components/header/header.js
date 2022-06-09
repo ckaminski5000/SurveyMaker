@@ -9,7 +9,7 @@ import logo from '../../images/logo.png';
 export function Header(props) {
   const [userData, setUserData] = useState(null);
   const { loginWithRedirect, user } = useAuth0();
-  const { logout } = useAuth0();
+  const { logout, isAuthenticated } = useAuth0();
 
   useEffect(() => {
     if (userData) {
@@ -27,7 +27,7 @@ export function Header(props) {
       
 
         <Container>
-          <Navbar.Brand href="/dashboard">
+          <Navbar.Brand href={isAuthenticated ? "/dashboard": '/'}>
           <img
           alt=""
           src={logo}

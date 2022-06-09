@@ -7,7 +7,12 @@ import surveyImg from '../images/surveyMakerImg.png';
 
 
 export function Splash() {
-  const { loginWithRedirect} = useAuth0();
+  const { loginWithRedirect, isAuthenticated} = useAuth0();
+  const navigate = useNavigate();
+
+  if(isAuthenticated){
+    navigate('/dashboard');
+  }
 
   
   return (
