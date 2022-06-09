@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 const { getSurvey, createandUpdateSurvey, updateSurvey, deleteSurvey, saveResponsesToSurvey, getSurveysByUser } = require('../controllers/surveyController.js');
-const { protect } = require('../middleware/authmiddleware');
 
 router.get('/:id', getSurvey)
 router.get('/surveys-by-user/:id', getSurveysByUser)

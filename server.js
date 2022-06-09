@@ -16,7 +16,6 @@ const serverUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:300
 
 const port = process.env.PORT || 8080;
 
-var questionsRouter = require('./backend/routes/questions');
 var surveysRouter = require('./backend/routes/surveys');
 var usersRouter = require('./backend/routes/users');
 
@@ -32,7 +31,6 @@ app.use(cookieParser());
 app.use(cors({credentials: true, origin: serverUrl}));
 
 
-app.use('/api/questions', questionsRouter);
 app.use('/api/surveys', surveysRouter);
 app.use('/users', usersRouter);
 

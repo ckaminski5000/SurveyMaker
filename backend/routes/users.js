@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 var qs = require('querystring');
 const { getUser, updateUserSurveys, deleteUser, loginOrCreateUser } = require('../controllers/userController');
-var passport = require('passport');
-var OpenIDConnectStrategy = require('passport-openidconnect');
+
 
 
 router.get('/', function(req, res) {
