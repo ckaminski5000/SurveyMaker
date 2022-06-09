@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5f04ec81.css",
+    "main.js": "/static/js/main.a016790a.js",
+    "static/js/787.718c5e08.chunk.js": "/static/js/787.718c5e08.chunk.js",
+    "static/media/surveyMakerImg.png": "/static/media/surveyMakerImg.6a4f5cc53f4b3c1b6d48.png",
+    "index.html": "/index.html",
+    "main.5f04ec81.css.map": "/static/css/main.5f04ec81.css.map",
+    "main.a016790a.js.map": "/static/js/main.a016790a.js.map",
+    "787.718c5e08.chunk.js.map": "/static/js/787.718c5e08.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5f04ec81.css",
+    "static/js/main.a016790a.js"
+  ]
+}

@@ -33,12 +33,12 @@ app.use('/api/questions', questionsRouter);
 app.use('/api/surveys', surveysRouter);
 app.use('/users', usersRouter);
 
+/*
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-
+*/
 
 
 
@@ -55,11 +55,13 @@ app.use(function(err, req, res, next) {
 });
 
 if(process.env.NODE_ENV === 'production'){
+  console.log('started using build folder');
   app.use(express.static(path.join(__dirname,'frontend/inventory-app/build')));
 
   // Handle React routing, return all requests to React app
-  app.get('*/', function(req, res) {
-    res.sendFile(path.resolve(__dirname, 'frontend/inventory-app/build', 'index.html'));
+  app.get('*', function(req, res) {
+    console.log('hit');
+    res.sendFile(path.join(__dirname, 'frontend/inventory-app/build/index.html'));
   });
 
 }
