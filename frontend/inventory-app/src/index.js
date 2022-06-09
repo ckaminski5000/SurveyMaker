@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Auth0Provider } from "@auth0/auth0-react";
 import { Router, BrowserRouter } from 'react-router-dom';
+import {serverUrl, redirectUri}  from './variables/constants';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -16,8 +17,8 @@ root.render(
     <Auth0Provider
     domain="dev-v-oprh9i.us.auth0.com"
     clientId="T6lwoUBNaCXtej7nbKBbH3mHNPWkrRWh"
-    redirectUri="http://localhost:3000/dashboard"
-    audience="http://localhost:5000"
+    redirectUri={redirectUri}
+    audience={serverUrl}
   >
       <App />
     </Auth0Provider>
