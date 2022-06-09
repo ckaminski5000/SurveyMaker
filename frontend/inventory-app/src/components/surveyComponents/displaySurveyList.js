@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback} from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { Table, Container, Col, Row, Button, Spinner } from "react-bootstrap";
-import { ThreeDots } from '../loader';
+import serverUrl from "../../variables/constants.js";
 
 export function DisplaySurveyList(props) {
   const [userData, setUserData] = useState(null);
@@ -20,7 +20,7 @@ export function DisplaySurveyList(props) {
 
 
   const retrieveSurveyData = useCallback(async () => {
-    const serverUrl = "http://localhost:5000";
+    
     //make api call to get list of surveys from user
     try {
       const token = await getAccessTokenSilently();

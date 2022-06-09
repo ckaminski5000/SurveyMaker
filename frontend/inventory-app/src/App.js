@@ -19,6 +19,8 @@ import { SurveySubmit } from "./components/surveyComponents/surveySubmit";
 import { Splash } from "./pages/splash";
 import { DisplayResults } from './components/surveyComponents/displayResults';
 import { NotFound } from './pages/notfound';
+import serverUrl from "../../variables/constants.js";
+
 
 function BasicLayout() {
   return (
@@ -46,7 +48,6 @@ function App() {
   const [error, setError] = useState(false);
 
   const loginOrCreateUser = useCallback(async (user) => {
-    let serverUrl = "http://localhost:5000";
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(`${serverUrl}/users/login`, {

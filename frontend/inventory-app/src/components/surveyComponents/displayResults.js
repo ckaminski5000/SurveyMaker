@@ -5,6 +5,8 @@ import { useState, useEffect, useCallback } from "react";
 import { ShortResponseResults, MultipleChoiceResults } from './displayResultsComponents';
 import { Container, Row, Col, Button, Spinner} from 'react-bootstrap';
 import { ThreeDots } from 'react-bootstrap-icons';
+import serverUrl from "../../variables/constants.js";
+
 
 
 export function DisplayResults() {
@@ -18,7 +20,6 @@ export function DisplayResults() {
 
   const callApi = useCallback(async (url, fetchOptions) => {
     
-    const serverUrl = 'http://localhost:5000';
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(`${serverUrl}${url}`, {

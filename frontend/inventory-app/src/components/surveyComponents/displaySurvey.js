@@ -3,6 +3,8 @@ import { Button, Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import { useState, useEffect, useCallback } from "react";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate,  useParams } from "react-router-dom";
+import serverUrl from "../../variables/constants.js";
+
 
 import uniqid from "uniqid";
 import {
@@ -25,7 +27,6 @@ export function DisplaySurvey(props) {
   
   const callApi = useCallback(async (url, fetchOptions) => {
     
-    const serverUrl = 'http://localhost:5000';
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(`${serverUrl}${url}`, {
@@ -94,7 +95,6 @@ export function DisplaySurvey(props) {
     e.preventDefault();
 
     //api call to save the responses to the database
-    const serverUrl = 'http://localhost:5000';
     try {
       const token = await getAccessTokenSilently();
       const response = await fetch(`${serverUrl}/api/surveys/update-responses/${survey._id}`, {
