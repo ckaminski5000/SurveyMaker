@@ -14,7 +14,6 @@ import {
   MultipleChoice,
   TrueFalse,
 } from "./displayQuestionComponents";
-import { useCallApi } from "../../hooks/useApi";
 
 export function DisplaySurvey(props) {
   
