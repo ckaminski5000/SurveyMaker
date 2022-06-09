@@ -9,6 +9,9 @@ const cors = require('cors')
 const { auth } = require('express-openid-connect');
 
 
+const serverUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000': 'https://www.surveymaker.app';
+
+
 
 
 const port = process.env.PORT || 8080;
@@ -26,7 +29,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({credentials: true, origin: "http://localhost:3000"}));
+app.use(cors({credentials: true, origin: serverUrl}));
 
 
 app.use('/api/questions', questionsRouter);
@@ -39,6 +42,18 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 */
+
+if(process.env.NODE_ENV === 'production'){
+  console.log('started using build folder');
+  app.use(express.static(path.join(__dirname,'frontend/inventory-app/build')));
+
+  // Handle React routing, return all requests to React app
+  app.get('*', function(req, res) {
+    console.log('hit');
+    res.sendFile(path.join(__dirname, 'frontend/inventory-app/build/index.html'));
+  });
+
+}
 
 
 
@@ -54,22 +69,7 @@ app.use(function(err, req, res, next) {
   })
 });
 
-if(process.env.NODE_ENV === 'production'){
-  console.log('started using build folder');
-  app.use(express.static(path.join(__dirname,'frontend/inventory-app/build')));
 
-  // Handle React routing, return all requests to React app
-  app.get('*', function(req, res) {
-    console.log('hit');
-    res.sendFile(path.join(__dirname, 'frontend/inventory-app/build/index.html'));
-  });
-
-}
-
-
-app.get('/authorized', function (req, res) {
-  res.send('Secured Resource');
-  });
 
 app.listen(port, () => console.log('CORS-enabled web server started on port ' + port));
 

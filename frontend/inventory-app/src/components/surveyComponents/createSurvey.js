@@ -12,7 +12,7 @@ import {
 import { AlertDismissible } from './alert';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate, useParams } from "react-router-dom";
-import serverUrl from "../../variables/constants.js";
+import {serverUrl} from "../../variables/constants.js";
 
 
 

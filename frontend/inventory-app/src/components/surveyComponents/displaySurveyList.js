@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback} from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import { Table, Container, Col, Row, Button, Spinner } from "react-bootstrap";
-import serverUrl from "../../variables/constants.js";
+import {serverUrl} from "../../variables/constants.js";
 
 export function DisplaySurveyList(props) {
   const [userData, setUserData] = useState(null);
@@ -94,6 +94,9 @@ export function DisplaySurveyList(props) {
     props.sendSurveyId(null)
     navigate('/create-survey')
   }
+
+  console.log('serverUrl = ' + serverUrl)
+  console.log('process.env. = ' + process.env.REACT_APP_NODE_ENV)
 
   return (
   <main className="main" style={{backgroundColor: 'rgb(237, 244, 245)'}}>

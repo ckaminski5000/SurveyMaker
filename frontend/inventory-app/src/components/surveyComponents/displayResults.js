@@ -4,8 +4,7 @@ import { useNavigate,  useParams } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { ShortResponseResults, MultipleChoiceResults } from './displayResultsComponents';
 import { Container, Row, Col, Button, Spinner} from 'react-bootstrap';
-import { ThreeDots } from 'react-bootstrap-icons';
-import serverUrl from "../../variables/constants.js";
+import {serverUrl} from "../../variables/constants.js";
 
 
 

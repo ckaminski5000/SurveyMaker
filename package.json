@@ -13,7 +13,7 @@
     "build": "cd frontend/inventory-app && npm run build",
     "install-client": "cd frontend/inventory-app && npm install",
     "heroku-postbuild": "npm run install-client && npm run build",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \" cd frontend/inventory-app && npm run build\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \" cd frontend/inventory-app && npm run start\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
