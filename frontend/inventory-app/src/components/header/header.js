@@ -5,7 +5,7 @@ import { Person } from "react-bootstrap-icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.png';
-import serverUrl from '../../variables/constants';
+import {logoutUrl} from '../../variables/constants';
 
 export function Header(props) {
   const [userData, setUserData] = useState(null);
@@ -59,7 +59,7 @@ export function Header(props) {
                   {user.name} is logged in &nbsp; &nbsp; &nbsp; &nbsp;{" "}
                 </Navbar.Text>
                 <button className="headerLink"
-                  onClick={() => logout({ returnTo: serverUrl })}
+                  onClick={() => logout({ returnTo: logoutUrl })}
                 >
                   Log Out
                 </button>
